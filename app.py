@@ -1,144 +1,131 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
 # --- Configuração da Página ---
 st.set_page_config(
-    page_title="Data Salary Insights | Portfolio",
-    page_icon="💰",
+    page_title="Salary Insights Pro",
+    page_icon="📊",
     layout="wide",
 )
 
-# --- Estilo Customizado (CSS) ---
+# --- CSS Avançado: Estilo Azul com Sombras ---
 st.markdown("""
     <style>
-    [data-testid="stMetricValue"] { font-size: 1.8rem; color: #00ffcc; }
-    .main { background-color: #0e1117; }
-    div.stButton > button:first-child { background-color: #00ffcc; color: black; border-radius: 10px; }
+    /* Fundo da página e fontes */
+    .main { background-color: #f8f9fa; }
+    
+    /* Título Principal */
+    .main-title {
+        font-size: 22px !important;
+        font-weight: 700;
+        color: #1E3A8A; /* Azul Escuro */
+        margin-bottom: 5px;
+    }
+    
+    /* Subtítulo das Seções */
+    .section-subtitle {
+        font-size: 16px !important;
+        font-weight: 500;
+        color: #475569;
+        margin-bottom: 20px;
+    }
+
+    /* Estilização dos Filtros na Barra Lateral (Azul e Sombra) */
+    section[data-testid="stSidebar"] {
+        background-color: #ffffff;
+        border-right: 1px solid #e2e8f0;
+    }
+    
+    .stMultiSelect, .stSelectbox {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 5px;
+        border: 1px solid #dbeafe;
+    }
+
+    /* Estilização das Métricas (Cards Azuis) */
+    [data-testid="stMetric"] {
+        background-color: #ffffff;
+        border-left: 5px solid #3B82F6; /* Linha lateral azul */
+        padding: 15px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 13px !important;
+        color: #64748b !important;
+    }
+    
+    [data-testid="stMetricValue"] {
+        font-size: 20px !important;
+        color: #1E40AF !important; /* Valor em azul escuro */
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- Carregamento Otimizado de Dados ---
+# --- Carregamento Otimizado ---
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/vqrca/dashboard_salarios_dados/refs/heads/main/dados-imersao-final.csv"
-    df = pd.read_csv(url)
-    return df
+    return pd.read_csv("https://raw.githubusercontent.com/vqrca/dashboard_salarios_dados/refs/heads/main/dados-imersao-final.csv")
 
 df = load_data()
 
-# --- Barra Lateral Minimalista ---
+# --- Barra Lateral (Filtros Estilizados) ---
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3222/3222764.png", width=100)
-    st.title("Filtros de Análise")
+    st.markdown("<h2 style='color: #1E3A8A; font-size: 20px;'>🔍 Refinar Busca</h2>", unsafe_allow_html=True)
     
-    anos = st.multiselect("📅 Ano de Referência", sorted(df['ano'].unique()), default=df['ano'].unique())
-    senioridade = st.multiselect("📈 Senioridade", sorted(df['senioridade'].unique()), default=df['senioridade'].unique())
-    contrato = st.multiselect("📄 Tipo de Contrato", sorted(df['contrato'].unique()), default=df['contrato'].unique())
-    
-    st.divider()
-    st.caption("Desenvolvido para Portfólio de Data Science")
+    anos = st.multiselect("Anos", sorted(df['ano'].unique()), default=df['ano'].unique())
+    senioridade = st.multiselect("Senioridade", sorted(df['senioridade'].unique()), default=df['senioridade'].unique())
+    contrato = st.multiselect("Tipo de Contrato", sorted(df['contrato'].unique()), default=df['contrato'].unique())
 
-# --- Lógica de Filtragem ---
+# --- Filtragem ---
 df_filtrado = df[
     (df['ano'].isin(anos)) &
     (df['senioridade'].isin(senioridade)) &
     (df['contrato'].isin(contrato))
 ]
 
-# --- Cabeçalho Impactante ---
-st.title("📊 Global Data Science Salary Explorer")
-st.markdown(f"Exibindo análise de **{len(df_filtrado)}** registros salariais em todo o mundo.")
+# --- Conteúdo Principal ---
+st.markdown('<p class="main-title">Dashboard de Análise de Salários na Área de Dados</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Métricas gerais (Salário anual em USD)</p>', unsafe_allow_html=True)
 
-# --- Seção de KPIs (Métricas) ---
-col1, col2, col3, col4 = st.columns(4)
-
+# --- KPIs em Cards ---
 if not df_filtrado.empty:
-    avg_salary = df_filtrado['usd'].mean()
-    max_salary = df_filtrado['usd'].max()
-    mode_job = df_filtrado['cargo'].mode()[0]
+    m1, m2, m3, m4 = st.columns(4)
     
-    with col1:
-        st.metric("Salário Médio (Anual)", f"USD {avg_salary/1000:.1f}k")
-    with col2:
-        st.metric("Teto Salarial", f"USD {max_salary/1000:.1f}k")
-    with col3:
-        st.metric("Amostras", f"{len(df_filtrado):,}")
-    with col4:
-        st.metric("Cargo mais Comum", mode_job)
+    m1.metric("Salário Médio", f"${df_filtrado['usd'].mean():,.0f}")
+    m2.metric("Salário Máximo", f"${df_filtrado['usd'].max():,.0f}")
+    m3.metric("Total de Registros", f"{len(df_filtrado):,}")
+    m4.metric("Top Cargo", df_filtrado["cargo"].mode()[0])
 else:
-    st.error("Nenhum dado encontrado para os filtros selecionados.")
+    st.info("Selecione filtros para exibir os resultados.")
 
-st.divider()
+st.markdown("<br>", unsafe_allow_html=True)
 
-# --- Análises Visuais ---
-tab1, tab2 = st.tabs(["📈 Distribuição & Mercado", "🗺️ Visão Geográfica"])
+# --- Gráficos (Tons de Azul) ---
+c1, c2 = st.columns(2)
 
-with tab1:
-    c1, c2 = st.columns([1.2, 0.8])
-    
-    with c1:
-        # Gráfico de Barras Horizontal com degradê
-        top_jobs = df_filtrado.groupby('cargo')['usd'].mean().nlargest(12).sort_values().reset_index()
-        fig_jobs = px.bar(
-            top_jobs, x='usd', y='cargo', 
-            orientation='h', 
-            title="Média Salarial por Cargo (Top 12)",
-            color='usd',
-            color_continuous_scale='Viridis',
-            template="plotly_dark"
-        )
-        fig_jobs.update_layout(showlegend=False, height=500)
-        st.plotly_chart(fig_jobs, use_container_width=True)
+with c1:
+    if not df_filtrado.empty:
+        top_cargos = df_filtrado.groupby('cargo')['usd'].mean().nlargest(10).sort_values().reset_index()
+        # Usando color_discrete_sequence para manter a paleta azul
+        fig1 = px.bar(top_cargos, x='usd', y='cargo', orientation='h', 
+                      title="Média Salarial por Cargo", 
+                      color_discrete_sequence=['#3B82F6'])
+        fig1.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title_font_size=14)
+        st.plotly_chart(fig1, use_container_width=True)
 
-    with c2:
-        # Histograma com Boxplot Marginal
-        fig_dist = px.histogram(
-            df_filtrado, x="usd", 
-            marginal="box", 
-            title="Distribuição Salarial e Outliers",
-            color_discrete_sequence=['#00ffcc'],
-            template="plotly_dark"
-        )
-        st.plotly_chart(fig_dist, use_container_width=True)
+with c2:
+    if not df_filtrado.empty:
+        fig2 = px.histogram(df_filtrado, x='usd', nbins=30, 
+                            title="Frequência Salarial",
+                            color_discrete_sequence=['#1E40AF'])
+        fig2.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title_font_size=14)
+        st.plotly_chart(fig2, use_container_width=True)
 
-with tab2:
-    # Mapa Coroplético
-    st.subheader("Concentração Salarial de Cientistas de Dados")
-    df_ds = df_filtrado[df_filtrado['cargo'].str.contains('Data Scientist', case=False)]
-    
-    if not df_ds.empty:
-        geo_data = df_ds.groupby('residencia_iso3')['usd'].mean().reset_index()
-        fig_map = px.choropleth(
-            geo_data, locations='residencia_iso3', color='usd',
-            hover_name='residencia_iso3', 
-            color_continuous_scale='RdYlGn',
-            template="plotly_dark"
-        )
-        fig_map.update_layout(height=600, margin={"r":0,"t":0,"l":0,"b":0})
-        st.plotly_chart(fig_map, use_container_width=True)
-    else:
-        st.info("Filtre por cargos que contenham 'Data Scientist' para visualizar o mapa.")
-
-# --- Tabela de Dados & Exportação ---
-with st.expander("📂 Explorar Dados Brutos e Exportar"):
-    c_down1, c_down2 = st.columns([3, 1])
-    with c_down1:
-        st.dataframe(df_filtrado, use_container_width=True)
-    with c_down2:
-        csv = df_filtrado.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="📥 Baixar CSV Filtrado",
-            data=csv,
-            file_name='data_salaries_export.csv',
-            mime='text/csv',
-        )
-        st.write("Dica: Use estes dados para treinar modelos de regressão!")
-
-# --- Footer ---
-st.markdown("---")
-st.markdown(
-    "<div style='text-align: center'>Dashboard desenvolvido como parte do Portfólio Profissional de Dados</div>", 
-    unsafe_allow_html=True
-)
+# --- Tabela ---
+st.markdown('<p class="section-subtitle">Exploração de Dados Detalhada</p>', unsafe_allow_html=True)
+st.dataframe(df_filtrado, use_container_width=True)
