@@ -75,7 +75,7 @@ df = load_data()
 
 # --- Barra Lateral (Filtros Estilizados) ---
 with st.sidebar:
-    st.markdown("<h2 style='color: #1E3A8A; font-size: 20px;'>🔍 Refinar Busca</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: #051647; font-size: 20px;'>🔍 Refinar Busca</h2>", unsafe_allow_html=True)
     
     anos = st.multiselect("Anos", sorted(df['ano'].unique()), default=df['ano'].unique())
     senioridade = st.multiselect("Senioridade", sorted(df['senioridade'].unique()), default=df['senioridade'].unique())
