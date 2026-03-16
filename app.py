@@ -33,7 +33,7 @@ st.markdown("""
 
     /* Estilização dos Filtros na Barra Lateral (Azul e Sombra) */
     section[data-testid="stSidebar"] {
-        background-color: #060e5c;
+        background-color: #ffffff;
         border-right: 1px solid #e2e8f0;
     }
     
@@ -47,7 +47,7 @@ st.markdown("""
 
     /* Estilização das Métricas (Cards Azuis) */
     [data-testid="stMetric"] {
-        background-color: #ffffff;
+        background-color: #dbeafe;
         border-left: 5px solid #3B82F6; /* Linha lateral azul */
         padding: 15px !important;
         border-radius: 10px !important;
