@@ -31,6 +31,13 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
+    /* FONTES DOS TÍTULOS DOS FILTROS EM AZUL MARINHO */
+    [data-testid="stWidgetLabel"] p {
+        color: #000080 !important; /* Navy Blue */
+        font-weight: 600 !important;
+        font-size: 14px !important;
+    }
+
     /* Estilização dos Filtros na Barra Lateral (Azul e Sombra) */
     section[data-testid="stSidebar"] {
         background-color: #ffffff;
@@ -47,7 +54,7 @@ st.markdown("""
 
     /* Estilização das Métricas (Cards Azuis) */
     [data-testid="stMetric"] {
-        background-color: #dbeafe;
+        background-color: #ffffff; /* Fundo branco para contraste */
         border-left: 5px solid #3B82F6; /* Linha lateral azul */
         padding: 15px !important;
         border-radius: 10px !important;
@@ -75,7 +82,7 @@ df = load_data()
 
 # --- Barra Lateral (Filtros Estilizados) ---
 with st.sidebar:
-    st.markdown("<h2 style='color: #051647; font-size: 20px;'>🔍 Refinar Busca</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: #000080; font-size: 20px;'>🔍 Refinar Busca</h2>", unsafe_allow_html=True)
     
     anos = st.multiselect("Anos", sorted(df['ano'].unique()), default=df['ano'].unique())
     senioridade = st.multiselect("Senioridade", sorted(df['senioridade'].unique()), default=df['senioridade'].unique())
@@ -111,7 +118,6 @@ c1, c2 = st.columns(2)
 with c1:
     if not df_filtrado.empty:
         top_cargos = df_filtrado.groupby('cargo')['usd'].mean().nlargest(10).sort_values().reset_index()
-        # Usando color_discrete_sequence para manter a paleta azul
         fig1 = px.bar(top_cargos, x='usd', y='cargo', orientation='h', 
                       title="Média Salarial por Cargo", 
                       color_discrete_sequence=['#3B82F6'])
