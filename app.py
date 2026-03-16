@@ -33,7 +33,7 @@ st.markdown("""
 
     /* Estilização dos Filtros na Barra Lateral (Azul e Sombra) */
     section[data-testid="stSidebar"] {
-        background-color: #ffffff;
+        background-color: #060e5c;
         border-right: 1px solid #e2e8f0;
     }
     
