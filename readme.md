@@ -8,7 +8,7 @@
 ## 🎯 Sobre o Projeto
 Este dashboard interativo foi desenvolvido para analisar tendências salariais na área de dados em nível global. O objetivo é fornecer uma ferramenta visual e intuitiva para que profissionais e recrutadores entendam o panorama de remuneração com base em senioridade, tipo de contrato e tamanho da empresa.
 
-**Link do App:** [Cole aqui o link do Streamlit Cloud]
+**Link do App:** https://dashboard-python-zq369ssdtan4suavj7c6sp.streamlit.app/
 
 ## 🚀 Funcionalidades
 - **Métricas em Tempo Real:** Visualização dinâmica de salário médio, teto salarial e volume de amostras.
@@ -23,8 +23,3 @@ Este dashboard interativo foi desenvolvido para analisar tendências salariais n
 - **Pandas**: Manipulação e tratamento de dados brutos.
 - **Plotly Express**: Criação de gráficos interativos e dinâmicos.
 - **CSS Injetado**: Customização avançada de componentes (Estilo Navy Blue & Cards).
-
-## 📊 Como rodar o projeto localmente
-1. Clone o repositório:
-   ```bash
-   git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/seu-usuario/nome-do-repositorio.git)#teste de dashboard
