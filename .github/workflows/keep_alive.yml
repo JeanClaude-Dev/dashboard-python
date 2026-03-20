@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Enviando sinal para o Streamlit
         run: |
-          curl -I https://opeera.streamlit.app
+          curl -I https://opeeraia-c2u4hrghthw4lsya36dhhi.streamlit.app
           curl -I https://chatbotiaportfolio-cqhrfqymq9ywdwse8ntdsb.streamlit.app
           curl -I https://dashboard-python-zq369ssdtan4suavj7c6sp.streamlit.app
           curl -I https://monitorsites-kjhrtrhcyadwx9el3aqgyu.streamlit.app/
